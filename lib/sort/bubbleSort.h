@@ -1,42 +1,35 @@
-// no need extra lib
+#ifndef __BUBBLESORT
+#define __BUBBLESORT
 
-/*------- Declaration BEGIN-------------------------------------------*/
+#ifndef __SWAP_FUNCTION
+#define __SWAP_FUNCTION
 
-typedef int sortDataType;
-
-int bubbleSortCmp(sortDataType a, sortDataType b) {
-
-	// a > b return(1) => increasing
-	// a < b return(1) => decreasing
-	if (a  < b) return(1);
-	
-	if (a == b) return(0);
-	
-	return(-1);
+void swap(void *a, void *b, size_t elementSize) {
+    void *tmp = malloc(elementSize);
+    memcpy(tmp, a, elementSize);
+    memcpy(a, b, elementSize);
+    memcpy(b, tmp, elementSize);
+    free(tmp);
 }
 
-/*------- Declaration END ------------------------------------------- */
+#endif
 
-void bubbleSwap(sortDataType *a, sortDataType *b) {
+typedef int (*comparator)(void const*, void const*);
 
-	int temp;
+void bubbleSort(void *arr, size_t n, size_t size, comparator cmp) {
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
-	return;
-}
-
-void bubbleSort(sortDataType arr[], int n) {
-
-	int i, j;
+	size_t i, j;
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
-			if ( bubbleSortCmp(arr[j], arr[j + 1]) == 1) {
-				bubbleSwap(&arr[j], &arr[j + 1]);
+			char *ptr_1 = (char *)arr + j * size;
+			char *ptr_2 = (char *)arr + (j + 1) * size;
+			if ( cmp(ptr_1, ptr_2) >= 0) {
+				swap(ptr_1, ptr_2, size);
 			}
 		}
 	}
 	
 	return;
 }
+
+#endif

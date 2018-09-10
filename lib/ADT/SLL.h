@@ -16,7 +16,7 @@ typedef struct {
 	SLLNode *tail;
 	int size;
 	int elementSize;
-} SLL;
+} SLL
 
 
 /*-----------------------------------------------------------------*/
