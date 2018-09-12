@@ -15,9 +15,7 @@ void printArray(int arr[], int n) {
 int cmpInt(void const *a, void const *b) {
 	int val_of_a = *(int *)a;
 	int val_of_b = *(int *)b;
-	int result = val_of_a - val_of_b;
-	//printf("%p - %p = %d\n", a, b, result);
-	return result;
+	return val_of_a - val_of_b;
 }
 
 int main() {
@@ -25,9 +23,8 @@ int main() {
 	int arr[] = { 2, 1, 4, 3, 6, 5, 8, 9, 7 };
 	int n = sizeof(arr) / sizeof(arr[0]);
 
-	
-	quickSort(arr, 0, n - 1, sizeof(int), cmpInt);
-	//quickSort(arr, 0, n - 1);
+	quicksort(arr, sizeof(int), cmpInt, 0, n - 1);
+	//swap(&arr[1], &arr[4], sizeof(int));
 	printArray(arr, n);
 	return 0;
 }
