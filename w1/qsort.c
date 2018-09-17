@@ -1,8 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../lib/sort/quickSort.h"
-//#include "../cLib/lib/sort/quickSort.h"
+#include "../lib/random/rand.c"
+
+int *generateRandArray(int nmemb) {
+	int *arr = (int *)malloc(nmemb * sizeof(int));
+	srand(time(0));
+	
+	for (int i = 0; i < nmemb; i++) {
+		arr[i] = rand();
+	}
+	
+	return arr;
+}
 
 void printArray(int arr[], int n) {
 	for (int i = 0; i < n; i++) {
@@ -18,15 +30,30 @@ int cmpInt(void const *a, void const *b) {
 	return val_of_a - val_of_b;
 }
 
-int main() {
-	
-	int arr[] = { 2, 1, 4, 3, 6, 5, 8, 9, 7 };
-	int n = sizeof(arr) / sizeof(arr[0]);
+typedef void (*runFunc )(void *, int, int, int , comparator);
 
-	quicksort(arr, sizeof(int), cmpInt, 0, n - 1);
-	//swap(&arr[1], &arr[4], sizeof(int));
-	printArray(arr, n);
-	return 0;
+void calculateRunTime(runFunc sort, char *testName) {
+
+	int n = 1000000;
+	int *arr = generateRandArray(n);
+	
+	clock_t begin = clock();
+	sort(arr, 0, n - 1, sizeof(int), cmpInt);
+	clock_t end = clock();
+
+	double runTime = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("----------------------------------------\n");
+	printf("%s :\n", testName);
+	printf("length of array : n = %d\n", n);
+	printf("Run time : %lf \n", runTime);
+	printf("----------------------------------------\n");
+	
+	return;
 }
 
-
+int main() {
+	
+	calculateRunTime(quick_sort_two_way, "quick sort two way");
+	calculateRunTime(quick_sort_three_way, "quick sort three way");
+	return 0;
+}
