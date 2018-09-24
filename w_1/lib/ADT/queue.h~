@@ -1,0 +1,90 @@
+
+/* ----------Declarartion -------------------------------- */
+
+typedef int dataTypeQueue;
+
+typedef struct queueNode {
+	dataTypeQueue data;
+	struct queueNode *next;
+} queueNode;
+
+typedef struct {
+	queueNode *head;
+	queueNode *tail;
+} queue;
+
+/*-------------------------------------------------------- */
+
+dataTypeQueue deQueue(queue *Q) {
+
+	if (Q->head == NULL) {
+
+		printf("Empty Queue! Can not deQueue!\n");
+		dataTypeQueue empty = -9999;
+
+		return(empty);
+	}
+
+	if (Q->head == Q->tail) {
+		
+		dataTypeQueue data = Q->head->data;
+		free(Q->head);
+		Q->head = Q->tail = NULL;
+		
+		return(data);
+	}
+
+	dataTypeQueue data = Q->head->data;
+	queueNode *temp = Q->head;
+	
+	Q->head = Q->head->next;
+	free(temp);
+	
+	return(data);
+}
+
+/*-------------------------------------------------------- */
+
+void queue_init(queue *Q) {
+
+	Q->head = NULL;
+	Q->tail = NULL;
+	return;
+}
+
+queueNode *makeNewQueueNode(dataTypeQueue data) {
+
+	queueNode *newNode = (queueNode *) malloc(sizeof(queueNode));
+
+	newNode->data = data;
+	newNode->next = NULL;
+	return(newNode);
+}
+
+int isEmptyQueue(queue *Q) {
+
+	if (Q->head == NULL) {
+		return(1);
+	}
+	
+	return(0);
+}
+
+void enQueue(queue *Q, dataTypeQueue data) {
+
+	queueNode *newNode = makeNewQueueNode(data);
+
+	if (Q->head == NULL) {
+		Q->head = Q->tail = newNode;
+		return;
+	}
+
+	Q->tail->next = newNode;
+	Q->tail = newNode;
+	
+	return;
+}
+
+dataTypeQueue headQ(queue *Q) {
+	return(Q->head->data);
+}
