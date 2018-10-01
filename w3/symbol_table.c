@@ -18,7 +18,7 @@ typedef struct {
 Phone_book *new_phone_book() {
   Phone_book *ret = (Phone_book *)malloc(sizeof(Phone_book));
   Phone_entry *phone_entries = 
-    (Phone_entry *)malloc(DEFAULT_Size * sizeof(Phone_entry));
+    (Phone_entry *)malloc(DEFAULT_SIZE * sizeof(Phone_entry));
   
   ret->phone_entries = phone_entries;
   ret->nmemb = 0;
@@ -48,26 +48,20 @@ char *get_phone_number_by_name(Phone_book phone_book, char *search_name) {
 
 void append(Phone_book phone_book, phone_entry new_phone_entry) {
   int nmemb = phone_book->nmemb;
-  Phone_entry *phone_entries = phone_book->phone_entries; 
+  int size = phone_book->size;
+  Phone_entry *phone_entries = phone_book->phone_entries;
+
+  if (nmemb == size) {
+    double_phone_book_size(phone_book);
+  } 
+
   phone_entries[nmemb] = new_phone_entry;
   phone_book->nmemb ++;
   return;
 }
 
-void overwrite_phone_entry(Phone_entry *target_phone_entry, char *new_phone_number) {
+void modify_phone_entry(Phone_entry *target_phone_entry, char *new_phone_number) {
   target_phone_entry->phone_number = new_phone_number;
-  return;
-}
-
-void append_or_overwrite(Phone_entry new_phone_entry, Phone_book phone_book) {
-  char *search_name = new_phone_entry->name;
-  Phone_entry *phone_entry = get_phone_entry_by_name(phone_book, search_name);
-  if (phone_entry == NULL) {
-    append(phone_book, new_phone_entry);
-  } else {
-    char new_phone_number = new_phone_entry->phone_number;
-    overwrite_phone_entry(phone_entry, new_phone_number);
-  }
   return;
 }
 
@@ -80,7 +74,7 @@ void add(Phone_book *phone_book, Phone_entry new_phone_entry) {
     append(phone_book, new_phone_entry);
   } else {
     char *new_phone_number = new_phone_entry->phone_number;
-    modify_phone_number(search_phone_entry, new_phone_number);
+    modify_phone_entry(search_phone_entry, new_phone_number);
   }
   return;
 }
