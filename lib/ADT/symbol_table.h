@@ -1,5 +1,5 @@
-#ifndef __SYMBOL_TABLE
-#define __SYMBOL_TABLE
+#ifndef __SYMBOL_TABLE_H__
+#define __SYMBOL_TABLE_H__
 
 #include <stdlib.h>
 #include <string.h>
@@ -89,7 +89,9 @@ void add(Symbol_table *container, void *key, void *value) {
 	return;
 }
 
-
-
+void drop_symbol_table(Symbol_table *container) {
+  free(container->entries);
+  return;
+}
 
 #endif
