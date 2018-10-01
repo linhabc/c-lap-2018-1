@@ -1,0 +1,54 @@
+#ifndef __RANDOMIZED_BST_H
+#DEFINE __RANDOMIZED_BST_H
+
+//  Randomized Binary Search Tree (Treap)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define max(x, y) ((x > y) ? x : y)
+
+typedef struct {
+	void *key;
+	void *payload;
+	int height;
+	Tree_node *left;
+	Tree_node *right;
+} Tree_node;
+
+
+int height(Tree_node **root) {
+	if (root = NULL) {
+		return 0;
+	}
+	return root->height;
+}
+
+Tree_node *new_tree_node(void *key, void *payload) {
+	Tree_node *new_node = (Tree_node *)malloc(sizeof(Tree_node));
+
+	new_node->key = key;
+	new_node->payload = payload;
+	new_node->heigth = 1; // new node is initially added at leaf
+	new_node->left = NULL;
+	new_node->right = NULL;
+	return new_node;
+}
+
+void right_rotate(Tree_node **y) {
+	Tree_node *x = *y->left;
+	Tree_node *T2 = x->right;
+
+	x->right = *y;
+	y->left = T2;
+
+	*y->height = max(height(*y->left), height(*y->right)) + 1;
+	x->height = max(height(x->left), height(x->right)) + 1;
+
+	&y = x;
+	return;
+}
+
+
+
+#endif

@@ -1,0 +1,7 @@
+#include <stdio.h>
+#include "./union_ADT.h"
+
+int main() {
+	
+	return 0;
+}

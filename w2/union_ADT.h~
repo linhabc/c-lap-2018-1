@@ -1,0 +1,57 @@
+#ifndef __UNION_ADT
+#define __UNION_ADT
+
+typedef union {
+	int i;
+	long l;
+	float f;
+	double d;
+	void *v;
+	char *str;
+	char ch;
+} Jval;
+
+Jval new_jval_i(int int_number) {
+	Jval a;
+	a.i = int_number;
+	return a;
+}
+
+Jval new_jval_l(long long_number) {
+	Jval a;
+	a.l = long_number;
+	return a;
+}
+
+Jval new_jval_f(int float_number) {
+	Jval a;
+	a.f = float_number;
+	return a;
+}
+
+Jval new_jval_d(int double_number) {
+	Jval a;
+	a.d = double_number;
+	return a;
+}
+
+Jval new_jval_str(char *str) {
+	Jval a;
+	a.str = str;
+	return a;
+}
+
+Jval new_jval_c(char ch) {
+	Jval a;
+	a.ch = ch;
+	return a;
+}
+
+int jval_i(Jval j) { return j.i; }
+long jval_l(Jval j) { return j.l; }
+float jval_f(Jval j) { return j.f; }
+double jval_d(Jval j) { return j.d; }
+char *jval_str(Jval j) { return j.str; }
+char jval_ch(Jval j) { return j.ch; }
+
+#endif
