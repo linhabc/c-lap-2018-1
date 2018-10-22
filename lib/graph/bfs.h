@@ -2,7 +2,6 @@
 #define __GRAPH_BFS_H__
 
 #include <stdio.h>
-#include <stdlib.h>
 #include "./adj_list.h"
 #include "./queue.h"
 
