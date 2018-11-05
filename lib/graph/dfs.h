@@ -26,30 +26,33 @@ void initialize_dfs(Graph *g) {
   return;
 }
 
-void find_path(int start, int end, int parent[]) {
+void find_path(Graph *g, int start, int end, int parent[]) {
   if ((start == end) || end == -1) {
-    printf("\n %d", start);
+    printf("\n %s", get_vertex_name(g, start));
   }
   else {
-    find_path(start, parent[end], parent);
-    printf(" %d", end);
+    find_path(g, start, parent[end], parent);
+    printf(" %s", get_vertex_name(g, end));
   }
   
   return;
 }
 
-void process_vertex_ealy(int v) {
+void process_vertex_ealy(Graph *g, int v) {
   printf("process vertex : %d\n", v);
   return;
 }
 
-void process_edge(int x, int y) {
+void process_edge(Graph *g, int x, int y) {
 
   if ((parent[y] != x) && (parent[x] != y)) {
     printf("\nGraph contain a circle!\n");
 
-    printf("Cycle from %d to %d", x, y);
-    find_path(y, x, parent);
+    printf("Cycle from %s to %s",
+	   get_vertex_name(g, x),
+	   get_vertex_name(g, y)
+	   );
+    find_path(g, y, x, parent);
     printf("\n\n");
 
     finished = true;
@@ -57,7 +60,7 @@ void process_edge(int x, int y) {
   return;
 }
 
-void process_vertex_late(int v) {
+void process_vertex_late(Graph *g, int v) {
 
   return;
 }
@@ -72,7 +75,7 @@ void dfs(Graph *g, int v) {
   time = time + 1;
   entry_time[v] = time;
 	
-  process_vertex_ealy(v);
+  process_vertex_ealy(g, v);
   
   p = g->edges[v];
   
@@ -80,11 +83,11 @@ void dfs(Graph *g, int v) {
     y = p->y;
     if (discoverded[y] == false) {
       parent[y] = v;
-      process_edge(v, y);
+      process_edge(g, v, y);
       dfs(g, y);
     }
     else if (!processed[y] || g->directed) {
-      process_edge(v, y);
+      process_edge(g, v, y);
     }
 
     if (finished) return;
@@ -92,7 +95,7 @@ void dfs(Graph *g, int v) {
     p = p->next;
   }
 
-  process_vertex_late(v);
+  process_vertex_late(g, v);
 
   time = time + 1;
   exit_time[v] = time;

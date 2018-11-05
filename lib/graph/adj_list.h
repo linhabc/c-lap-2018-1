@@ -16,10 +16,11 @@ typedef struct Edgenode {
 
 typedef struct {
   Edgenode *edges[MAXV + 1];
-  int degree[MAXV + 1];      // outter degree of each vertex
-  int nvertices;             // number of vertex in graph
-  int nedges;                // number of edge in graph;
-  bool directed;             // is graph directed 
+  int degree[MAXV + 1];          // outter degree of each vertex
+  char *vertex_names[MAXV + 1];
+  int nvertices;                 // number of vertex in graph
+  int nedges;                    // number of edge in graph;
+  bool directed;                 // is graph directed 
 } Graph;
 
 void init_graph(Graph *g, bool directed) {
@@ -33,6 +34,15 @@ void init_graph(Graph *g, bool directed) {
   for (int i = 1; i <= MAXV; i++) g->edges[i] = NULL;
   
   return;
+}
+
+void add_vertex_name(Graph *g, int vertex_index, char *name) {
+  g->vertex_names[vertex_index] = name;
+  return;
+}
+
+char *get_vertex_name(Graph *g, int vertex_index) {
+  return g->vertex_names[vertex_index];
 }
 
 void insert_edge(Graph *g, int x, int y, bool directed) {
