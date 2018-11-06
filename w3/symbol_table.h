@@ -1,12 +1,8 @@
-#ifndef __SYMBOL_TABLE
-#define __SYMBOL_TABLE
+#ifndef __SYMBOL_TABLE_H__
+#define __SYMBOL_TABLE_H__
 
 #include <stdlib.h>
+#include "./AVL_tree.h"
 
-#define DEFAULT_SIZE 10
-
-typedef struct {
-	void *key;
-} Entry;
 
 #endif

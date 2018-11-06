@@ -35,6 +35,12 @@ void init_graph(Graph *g, bool directed) {
 	return;
 }
 
+Graph *new_graph(bool directed) {
+	Graph *ret = (Graph *)malloc(sizeof(Graph));
+	init_graph(ret, directed);
+	return ret;
+}
+
 void insert_edge(Graph *g, int x, int y, bool directed) {
 	Edgenode *p = (Edgenode *)malloc(sizeof(Edgenode));  // temp pointer
 

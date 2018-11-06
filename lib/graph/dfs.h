@@ -32,7 +32,7 @@ void process_vertex_ealy(int v) {
 }
 
 void process_edge(int x, int y) {
-	printf("process edge (%d, %d) \n", x, y);
+	//printf("process edge (%d, %d) \n", x, y);
 	return;
 }
 
@@ -41,21 +41,40 @@ void process_vertex_late(int v) {
 	return;
 }
 
-void dfs(Graph *g, int start) {
+void dfs(Graph *g, int v) {
 	Edgenode *p;     // temp node
 	int y;           // successor vertex
 
-	discoverded[start] = true;
+	discoverded[v] = true;
 	time = time + 1;
-	entry_time[start] = time;
+	entry_time[v] = time;
 
-	process_vertex_ealy(start);
+	process_vertex_ealy(v);
 
-	p = g->edges[start];
+	p = g->edges[v];
 
 	while (p != NULL) {
-		y = p->next;
+		y = p->y;
+
+		if (discoverded[y] == false) {
+			parent[y] = v;
+			process_edge(v, y);
+			dfs(g, y);
+		}
+		else if (discoverded[y] == true || g->directed) {
+			process_edge(v, y);
+		}
+		
+		p = p->next;
 	}
+
+	process_vertex_late(v);
+
+	time = time + 1;
+	exit_time[v] = time;
+	processed[v] = true;
+
+	return;
 }
 
 
