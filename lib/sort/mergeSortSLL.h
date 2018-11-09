@@ -24,8 +24,7 @@ int cmpInt(void *a, void *b) {
 void frontBackSplit(
 					SLLNode *source,
 					SLLNode **frontRef,
-					SLLNode **backRef
-					) {
+					SLLNode **backRef) {
 	SLLNode *fast_p = source->next;
 	SLLNode *slow_p = source;
 
