@@ -153,7 +153,6 @@ void sort_vertex_graph(Graph *g) {
 	for (int i = 1; i < g->nvertices; i++) {
 		bubble_sort_linked_list(g->edges[i]);
 	}
-
 	return;
 }
 

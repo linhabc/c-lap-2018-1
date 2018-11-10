@@ -7,7 +7,7 @@
 int main() {
   Graph *g = (Graph *)malloc(sizeof(Graph));
 
-  read_graph_from_file(g, "graph_input.txt", true);
+  read_graph_from_file(g, "graph_input.txt", false);
   sort_vertex_graph(g);
 
   print_graph(g);
@@ -19,10 +19,11 @@ int main() {
   printf("\nTopological sort : \n");
   initialize_topo_sort(g);
   topo_sort(g);
-  printf("\n\n");
+  printf("\n");
 
   initialize_dfs(g);
   printf("\nisCyclic :  %d\n", is_cyclic(g));
+
   
   return 0;
 }
