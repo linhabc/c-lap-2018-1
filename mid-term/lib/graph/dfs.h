@@ -14,6 +14,7 @@ int parent[MAXV + 1];
 
 #endif
 
+int visisted[MAXV + 1];
 int entry_time[MAXV + 1];
 int exit_time[MAXV + 1];
 
@@ -252,5 +253,34 @@ void topo_sort(Graph *g)
 }
 
 /* Topological sort END */
+
+/* count path BEGIN */
+
+void initialize_count_path() {
+	for (int i = 0; i <= MAXV; i++) {
+		visisted[i] = false;
+	}
+	return;
+}
+
+void count_path(Graph *g, int start, int end, int *counter) {
+	visisted[start] = true;
+	
+	if (start == end) {
+		*counter = *counter + 1;
+	} else {
+		Edgenode *temp = g->edges[start];
+		while (temp != NULL) {
+			if (!visisted[temp->y]) {
+				count_path(g, temp->y, end, counter);
+			}
+			temp = temp->next;
+		}
+	}
+
+	visisted[start] = false;
+}
+
+/* count path END   */
 
 #endif

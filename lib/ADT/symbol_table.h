@@ -6,6 +6,7 @@
 
 typedef struct {
 	Tree_node *root;
+	
 } Symbol_table;
 
 #endif
