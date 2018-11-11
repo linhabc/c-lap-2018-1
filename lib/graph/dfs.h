@@ -96,8 +96,7 @@ void dfs(Graph *g, int v)
 			process_edge_dfs(g, v, y);
 		}
 
-		if (finished)
-			return;
+		if (finished) return;
 
 		p = p->next;
 	}

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdio.h>
 #include <string.h>
-#include "../lib/graph/dfs.h"
-#include "../lib/graph/bfs.h"
+#include "./lib/graph/dfs.h"
+#include "./lib/graph/bfs.h"
 
 void read_graph_from_file(Graph *g, char *fn, bool directed) {
 	FILE *fp = fopen(fn, "r");
@@ -141,7 +141,7 @@ void find_island_vertex(Graph *g, int matrix[100][100]) {
 		for (int j = 0; j < 5; j++) {
 			if (matrix[i][j] == 0) {
 				if (g->degree[index_of(i, j)] == 0) {
-					printf("%d%d ", j, i);
+					printf("%d%d ", i, j);
 				}
 			}
 		}
