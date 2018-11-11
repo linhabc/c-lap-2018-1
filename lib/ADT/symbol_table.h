@@ -4,15 +4,8 @@
 #include <stdlib.h>
 #include "./avl_tree.h"
 
-typedef int (*Compare_key_function)(void *, void *);
-
-typedef struct
-{
-	Entry *entries;
-	int size;
-	int nmemb;
-	New_entry_function new_entry;
-	Compare_key_function cmp;
+typedef struct {
+	Tree_node *root;
 } Symbol_table;
 
 #endif

@@ -200,6 +200,4 @@ void delete_node(Tree_node **root, void *key, Comparator_key cmp_func) {
 
 /************************** END insert and delete node ************************/
 
-
-
 #endif
