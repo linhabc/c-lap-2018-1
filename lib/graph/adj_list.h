@@ -82,45 +82,65 @@ void insert_edge(Graph *g, int x, int y, bool directed)
   return;
 }
 
-void read_graph_from_file(Graph *g, char *fn, bool directed)
-{
+// void read_graph_from_file(Graph *g, char *fn, bool directed)
+// {
 
-  FILE *fp = fopen(fn, "r");
+//   FILE *fp = fopen(fn, "r");
 
-  if (fp == NULL)
-  {
-    printf("Can not open file !\n");
-  }
-  else
-  {
-    init_graph(g, directed);
+//   if (fp == NULL)
+//   {
+//     printf("Can not open file !\n");
+//   }
+//   else
+//   {
+//     init_graph(g, directed);
 
-    int x, y; // vertex in edge (x, y)
-    int nedges;
-    fscanf(fp, "%d %d", &(g->nvertices), &nedges);
+//     int x, y; // vertex in edge (x, y)
+//     int nedges;
+//     fscanf(fp, "%d %d", &(g->nvertices), &nedges);
 
-    for (int i = 0; i < nedges; i++)
-    {
-      fscanf(fp, "%d %d", &x, &y);
-      insert_edge(g, x, y, directed);
-    }
-  }
+//     for (int i = 0; i < nedges; i++)
+//     {
+//       fscanf(fp, "%d %d", &x, &y);
+//       insert_edge(g, x, y, directed);
+//     }
+//   }
 
-  fclose(fp);
-  return;
-}
+//   fclose(fp);
+//   return;
+// }
 
-void print_graph(Graph *g)
+void print_graph_by_vertex_index(Graph *g)
 {
   Edgenode *p; // temp pointer
 
-  for (int i = 0; i <= g->nvertices; i++)
+  for (int i = 0; i < g->nvertices; i++)
   {
     printf("degree : %d ||  %d ", g->degree[i], i);
+
     p = g->edges[i];
     while (p != NULL)
     {
       printf("--> %d", p->y);
+      p = p->next;
+    }
+    printf("\n");
+  }
+  return;
+}
+
+void print_graph_by_vertex_name(Graph *g)
+{
+  Edgenode *p; // temp pointer
+
+  for (int i = 0; i < g->nvertices; i++)
+  {
+    printf("degree : %d ||  %s ", g->degree[i], get_vertex_name(g, i));
+
+    p = g->edges[i];
+    while (p != NULL)
+    {
+      printf("--> %s", get_vertex_name(g, p->y));
       p = p->next;
     }
     printf("\n");
