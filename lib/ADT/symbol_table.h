@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include "./avl_tree.h"
 
-typedef int (* Compare_key_function)(void *, void *);
+typedef int (*Compare_key_function)(void *, void *);
 
-typedef struct {
+typedef struct
+{
 	Entry *entries;
 	int size;
 	int nmemb;

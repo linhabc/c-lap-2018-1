@@ -75,14 +75,13 @@ void bfs(Graph *g, int start) {
 	return;
 }
 
-void find_shortes_path(int start, int end, int parent[]) {
+void find_shortes_path(Graph *g, int start, int end, int parent[]) {
 	if (start == end || end == -1) {
 		printf("\n%d", start);
 	} else {
-		find_shortes_path(start, parent[end], parent);
+		find_shortes_path(g, start, parent[end], parent);
 		printf(" %d", end);
 	}
-
 	return;
 }
 

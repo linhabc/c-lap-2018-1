@@ -20,8 +20,9 @@ int exit_time[MAXV + 1];
 int time;
 bool finished;
 
-void initialize_dfs(Graph *g) {
-	for (int i = 1; i <= g->nvertices; i++)
+void initialize_dfs(Graph *g)
+{
+	for (int i = 0; i <= g->nvertices; i++)
 	{
 		processed[i] = discovered[i] = false;
 		parent[i] = -1;
@@ -35,10 +36,12 @@ void initialize_dfs(Graph *g) {
 
 void find_path(Graph *g, int start, int end, int parent[])
 {
-	if ((start == end) || end == -1) {
+	if ((start == end) || end == -1)
+	{
 		printf("\n %d", start);
 	}
-	else {
+	else
+	{
 		find_path(g, start, parent[end], parent);
 		printf(" %d", end);
 	}
@@ -46,25 +49,30 @@ void find_path(Graph *g, int start, int end, int parent[])
 	return;
 }
 
-void process_vertex_ealy_dfs(Graph *g, int v) {
+void process_vertex_ealy_dfs(Graph *g, int v)
+{
 	printf("process vertex : %d\n", v);
 	return;
 }
 
-void process_edge_dfs(Graph *g, int x, int y) {
+void process_edge_dfs(Graph *g, int x, int y)
+{
 
 	return;
 }
 
-void process_vertex_late_dfs(Graph *g, int v) {
+void process_vertex_late_dfs(Graph *g, int v)
+{
 	return;
 }
 
-void dfs(Graph *g, int v) {
+void dfs(Graph *g, int v)
+{
 	Edgenode *p; // temp node
 	int y;			 // successor vertex
 
-	if (finished) return;
+	if (finished)
+		return;
 
 	discovered[v] = true;
 	time = time + 1;
@@ -74,18 +82,22 @@ void dfs(Graph *g, int v) {
 
 	p = g->edges[v];
 
-	while (p != NULL) {
+	while (p != NULL)
+	{
 		y = p->y;
-		if (discovered[y] == false) {
+		if (discovered[y] == false)
+		{
 			parent[y] = v;
 			process_edge_dfs(g, v, y);
 			dfs(g, y);
 		}
-		else if (!processed[y] || g->directed) {
+		else if (!processed[y] || g->directed)
+		{
 			process_edge_dfs(g, v, y);
 		}
 
-		if (finished) return;
+		if (finished)
+			return;
 
 		p = p->next;
 	}
@@ -101,36 +113,44 @@ void dfs(Graph *g, int v) {
 
 /* check if a graph contain a circle BEGIN */
 
-void process_edge_is_cyclic(int x, int y) {
-	if (parent[y] != x && discovered[y] && !processed[y]) {
+void process_edge_is_cyclic(int x, int y)
+{
+	if (parent[y] != x && discovered[y] && !processed[y])
+	{
 		finished = true;
 	}
 	return;
 }
 
-int is_cyclic_dfs_helper(Graph *g, int v) {
+int is_cyclic_dfs_helper(Graph *g, int v)
+{
 	Edgenode *p; // temp node
 	int y;			 // successor vertex
 
-	if (finished) return true;
+	if (finished)
+		return true;
 
 	discovered[v] = true;
 	time = time + 1;
 	entry_time[v] = time;
 
 	p = g->edges[v];
-	while (p != NULL) {
+	while (p != NULL)
+	{
 		y = p->y;
-		if (discovered[y] == false) {
+		if (discovered[y] == false)
+		{
 			parent[y] = v;
 			process_edge_is_cyclic(v, y);
 			is_cyclic_dfs_helper(g, y);
 		}
-		else if (!processed[y] || g->directed) {
+		else if (!processed[y] || g->directed)
+		{
 			process_edge_is_cyclic(v, y);
 		}
 
-		if (finished) return true;
+		if (finished)
+			return true;
 
 		p = p->next;
 	}
@@ -139,14 +159,17 @@ int is_cyclic_dfs_helper(Graph *g, int v) {
 	exit_time[v] = time;
 
 	processed[v] = true;
-	
+
 	return false;
 }
 
-int is_cyclic(Graph *g) {
+int is_cyclic(Graph *g)
+{
 	int i;
-	for (int i = 1; i <= g->nvertices; i++) {
-		if (is_cyclic_dfs_helper(g, i)) {
+	for (int i = 0; i < g->nvertices; i++)
+	{
+		if (is_cyclic_dfs_helper(g, i))
+		{
 			return true;
 		}
 	}
@@ -154,7 +177,6 @@ int is_cyclic(Graph *g) {
 }
 
 /* check if a graph contain a circle END */
-
 
 /* Topological sort BEGIN */
 
@@ -213,9 +235,10 @@ void dfs_topo_sort_helper(Graph *g, int v)
 	return;
 }
 
-void topo_sort(Graph *g) {
+void topo_sort(Graph *g)
+{
 	int i;
-	for (int i = 1; i < g->nvertices; i++)
+	for (int i = 0; i < g->nvertices; i++)
 	{
 		if (discovered[i] == false)
 		{
@@ -230,6 +253,5 @@ void topo_sort(Graph *g) {
 }
 
 /* Topological sort END */
-
 
 #endif
