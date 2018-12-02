@@ -82,39 +82,87 @@ void insert_edge(Graph *g, int x, int y, bool directed)
   return;
 }
 
-// void read_graph_from_file(Graph *g, char *fn, bool directed)
-// {
+void insert_weighted_edge(Graph *g, int x, int y, int weight, bool directed) {
+  Edgenode *p = (Edgenode *)malloc(sizeof(Edgenode)); // temp pointer
 
-//   FILE *fp = fopen(fn, "r");
+  p->weight = weight;
+  p->y = y;
+  p->next = g->edges[x];
 
-//   if (fp == NULL)
-//   {
-//     printf("Can not open file !\n");
-//   }
-//   else
-//   {
-//     init_graph(g, directed);
+  g->edges[x] = p;
+  g->degree[x]++;
 
-//     int x, y; // vertex in edge (x, y)
-//     int nedges;
-//     fscanf(fp, "%d %d", &(g->nvertices), &nedges);
+  if (directed == false)
+  {
+    insert_edge(g, y, x, true);
+  }
+  else
+  {
+    g->nedges++;
+  }
 
-//     for (int i = 0; i < nedges; i++)
-//     {
-//       fscanf(fp, "%d %d", &x, &y);
-//       insert_edge(g, x, y, directed);
-//     }
-//   }
+  return;
+}
 
-//   fclose(fp);
-//   return;
-// }
+
+void read_graph_from_file(Graph *g, char *fn, bool directed)
+{
+
+  FILE *fp = fopen(fn, "r");
+
+  if (fp == NULL)
+  {
+    printf("Can not open file !\n");
+  }
+  else
+  {
+    init_graph(g, directed);
+
+    int x, y; // vertex in edge (x, y)
+    int nedges;
+    fscanf(fp, "%d %d", &(g->nvertices), &nedges);
+
+    for (int i = 0; i < nedges; i++)
+    {
+      fscanf(fp, "%d %d", &x, &y);
+      insert_edge(g, x, y, directed);
+    }
+  }
+
+  fclose(fp);
+  return;
+}
+
+void read_weighted_graph(Graph *g, char *fn, bool directed)
+{
+
+  FILE *fp = fopen(fn, "r");
+
+  if (fp == NULL) {
+    printf("Can not open file !\n");
+  } else {
+    init_graph(g, directed);
+
+    int x, y, weight; // vertex in edge (x, y)
+    int nedges;
+    fscanf(fp, "%d %d", &(g->nvertices), &nedges);
+
+    for (int i = 1; i <= nedges; i++)
+    {
+      fscanf(fp, "%d %d %d", &x, &y, &weight);
+      insert_weighted_edge(g, x, y, weight, directed);
+    }
+  }
+
+  fclose(fp);
+  return;
+}
 
 void print_graph_by_vertex_index(Graph *g)
 {
   Edgenode *p; // temp pointer
 
-  for (int i = 0; i < g->nvertices; i++)
+  for (int i = 1; i <= g->nvertices; i++)
   {
     printf("degree : %d ||  %d ", g->degree[i], i);
 
@@ -157,6 +205,10 @@ void swap_y(Edgenode *a, Edgenode *b)
   temp = a->y;
   a->y = b->y;
   b->y = temp;
+
+  temp = a->weight;
+  a->weight = b->weight;
+  b->weight = temp;
   return;
 }
 
