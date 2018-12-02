@@ -6,14 +6,9 @@
 #define MAXV 1000 // max vertex
 
 typedef int bool;
-enum
-{
-  false,
-  true
-};
+enum { false, true };
 
-typedef struct Edgenode
-{
+typedef struct Edgenode {
   int y; // adjacency info
   int weight;
   struct Edgenode *next; // the next adge in list
@@ -92,12 +87,9 @@ void insert_weighted_edge(Graph *g, int x, int y, int weight, bool directed) {
   g->edges[x] = p;
   g->degree[x]++;
 
-  if (directed == false)
-  {
-    insert_edge(g, y, x, true);
-  }
-  else
-  {
+  if (directed == false) {
+    insert_weighted_edge(g, y, x, weight, true);
+  } else {
     g->nedges++;
   }
 
@@ -147,9 +139,8 @@ void read_weighted_graph(Graph *g, char *fn, bool directed)
     int nedges;
     fscanf(fp, "%d %d", &(g->nvertices), &nedges);
 
-    for (int i = 1; i <= nedges; i++)
-    {
-      fscanf(fp, "%d %d %d", &x, &y, &weight);
+    for (int i = 1; i <= nedges; i++) {
+      fscanf(fp, "%d %d %d ", &x, &y, &weight);
       insert_weighted_edge(g, x, y, weight, directed);
     }
   }

@@ -8,70 +8,7 @@
 
 #define INT_MAX 100000000
 
-int parent[MAXV + 1];
-
-// Prim's minimum  spanning tree algorithm 
-void prim(Graph *g, int start) {
-  int i;                   /* counter */
-  Edgenode *p;             /* temporary pointer */
-  bool intree[MAXV + 1];   /* is the vertex is in tree yet ? */
-  int distance[MAXV + 1]; /* cost off adding vertex to tree */
-  int v;                   /* current vertex to process */
-  int y;                   /* candidate next vertex */
-  int weight;              /* edge weight */
-  int dist;                /* best current distance from start */
-
-  for (i = 1; i <= g->nvertices; i++) {
-    intree[i] = false;
-    distance[i] = INT_MAX;
-    parent[i] = -1;
-  }
-
-  distance[start] = 0;
-  v = start;
-
-  while (intree[v] == false) {
-    intree[v] = true;
-    p = g->edges[v];
-    
-    while (p != NULL) {
-      y = p->y;
-      weight = p->weight;
-      if ((distance[y] > weight) && (intree[y] == false)) {
-        distance[y] = weight;
-        parent[y] = v;
-        printf("edge (%d, %d) weight : %d\n", v, y, weight);
-      }
-      
-      p = p->next;
-    }
-
-    v = 1;
-    dist = INT_MAX;
-    for (i = 1; i <= g->nvertices; i++) {
-      if ((intree[i] == false) && (dist > distance[i])) {
-        dist = distance[i];
-        v = i;
-      }
-    }
-      
-  }
-
-  return;
-}
-
-void print_mini_spanning_tree(Graph *g) {
-  printf("\n");
-  for (int i = 1; i <= g->nvertices; i++) {
-    printf(" %d", parent[i]);
-  }
-  printf("\n");
-  return;
-}
-
-/* END Prim's algorithms */
-
-/* Kruskal's Algorithms */
+/* Kruskal's Algorithms-------BEGIN---------*/
 /* finding spanning tree */
 
 #define SET_SIZE 10000
@@ -185,5 +122,73 @@ void kruskal(Graph *g) {
   }
   return;
 }
-/* END Kruskal's Algo */
+/* Kruskal's Algo-------END-------*/
+
+
+/* Dijkstra's Algorithm------BEGIN----*/
+/* for finding shortest path */
+int parent_dijkstra[MAXV + 1];
+bool intree_dijkstra[MAXV + 1]; /* is the vertex in tree yet ?*/
+int distance_dijkstra[MAXV + 1];/* the distance vertex is from start */
+
+void init_dijkstra(Graph *g) {
+  for (int i = 1; i <= g->nvertices; i++) {
+    intree_dijkstra[i] = false;
+    distance_dijkstra[i] = INT_MAX;
+    parent_dijkstra[i] = -1;
+  }
+  return;
+}
+
+void dijkstra(Graph *g, int start) {
+  int i;
+  Edgenode *p;
+  int v;                 /* curretn vertex to process */
+  int w;                 /* candidate for next vertex in tree */
+  int weight;            /* edge weight */
+  int dist;              /* best current distance from start */
+
+  init_dijkstra(g);
+
+  distance_dijkstra[start] = 0;
+  v = start;
+
+  while (intree_dijkstra[v] == false) {
+    intree_dijkstra[v] = true;
+    p = g->edges[v];
+    while (p != NULL) {
+      w = p->y;
+      weight = p->weight;
+      if (distance_dijkstra[w] > (distance_dijkstra[v] + weight)) {
+        distance_dijkstra[w] = distance_dijkstra[v] + weight;
+        parent_dijkstra[w] = v;
+      }
+      p = p->next;
+    }
+
+    v = 1;
+    dist = INT_MAX;
+    for (i = 1; i <= g->nvertices; i++) {
+      if (intree_dijkstra[i] == false && dist > distance_dijkstra[i]) {
+        dist = distance_dijkstra[i];
+        v = i;
+      }
+    }
+
+  }
+
+  return;
+}
+
+void find_path_dijkstra(Graph *g, int start, int end) {
+	if (start == end || end == -1) {
+		printf("\n%d", start);
+	} else {
+		find_path_dijkstra(g, start, parent_dijkstra[end]);
+		printf(" %d", end);
+	}
+	return;
+}
+/* Dojstra's Algorithm-------END------*/
+
 #endif

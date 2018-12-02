@@ -5,13 +5,11 @@
 int main() {
   
   Graph *g = (Graph *)malloc(sizeof(Graph));
-  read_weighted_graph(g, "graph_input.txt", true);
+  read_weighted_graph(g, "spanning_tree_graph_input.txt", true);
   sort_vertex_graph(g);
 
   // print_graph_by_vertex_index(g);
   print_graph(g);
-  // prim(g, 1);
-  // print_mini_spanning_tree(g);
   kruskal(g);
   return 0;
 }
