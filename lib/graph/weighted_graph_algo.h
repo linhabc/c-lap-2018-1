@@ -189,6 +189,6 @@ void find_path_dijkstra(Graph *g, int start, int end) {
 	}
 	return;
 }
-/* Dojstra's Algorithm-------END------*/
+/* Dijkstra's Algorithm-------END------*/
 
 #endif
