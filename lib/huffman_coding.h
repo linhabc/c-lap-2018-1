@@ -175,6 +175,133 @@ void printHuffmanCodes(char data[], int freq[], int size) {
 }
 
 
+typedef struct {
+    int size;
+    int bits[20];
+} Coding;
 
+Coding huffmanTable[256];
+
+void copyArray(int *source, int *destination, int n) {
+    for (int i = 0; i < n; i++) {
+        destination[i] = source[i];
+    }
+    return;
+}
+
+void createHuffmanEndcoding(MinHeapNode *root, int array[], int top) {
+    
+    if (root->left) {
+        array[top] = 0;
+        createHuffmanEndcoding(root->left, array, top + 1);
+    }
+
+    if (root->right) {
+        array[top] = 1;
+        createHuffmanEndcoding(root->right, array, top + 1);
+    }
+
+    if (isLeaf(root)) {
+        char endCodeChar = root->data;
+        huffmanTable[endCodeChar].size = top;
+
+        int *bitArray = huffmanTable[endCodeChar].bits;
+        copyArray(array, bitArray, top);
+    }
+    
+    return;
+}
+
+void createHuffmanTable(char data[], int freq[], int size) {
+    MinHeapNode *root = buildHuffmanTree(data, freq, size);
+
+    int array[MAX_TREE_HT];
+    int top = 0;
+    createHuffmanEndcoding(root, array, top);
+
+    return;
+}
+
+void printHuffmanEndCoding(Coding huffmanCode) {
+    for (int i = 0; i < huffmanCode.size; i++) {
+        printf("%d", huffmanCode.bits[i]);
+    }
+    return;
+}
+
+
+
+long countCharInFile(FILE *fp) {
+    long nchars;
+    fseek(fp, 0, SEEK_END);
+    nchars = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    return nchars;
+}
+
+FILE *openFileWithCatchException(char *fn) {
+    FILE *fp = fopen(fn, "rb");
+    if (fp == NULL) {
+        printf("Can not open file!");
+        exit(0);
+    }
+    return fp;
+}
+
+void generateDataForHuffmanAlgo(char *buffer, long nchars, char data[], int freq[], int *size) {
+    
+    char countOf[127] = { 0 };
+    for (int i = 0; i < nchars; i++) {
+        char ch = buffer[i];
+        countOf[ch]++;
+    }
+
+    int _size = 0;
+    for (char i = 0; i < 127; i++) {
+        if (countOf[i] > 0) {
+            freq[_size] = countOf[i];
+            data[_size] = i;
+            _size++; 
+        }
+    }
+    *size = _size;
+    return; 
+}
+
+void createHuffmanEndCodedFile(char *bufferIn, long nchars) {
+    FILE *fp = fopen("huffman_endcoded.txt", "a+");
+    for (long i = 0; i < nchars; i++) {
+        char ch = bufferIn[i];
+        int size = huffmanTable[ch].size;
+        int *bits = huffmanTable[ch].bits;
+        for (int j = 0; j < size; j++) {
+            fprintf(fp, "%d", bits[j]);
+        }
+    }
+    fclose(fp);
+    return;
+}
+
+void huffmanEndCodingFile(char *fn) {
+    FILE *fp = openFileWithCatchException(fn);
+    long nchars = countCharInFile(fp);
+    
+    char *bufferIn = malloc(nchars + 1);
+    if (bufferIn) {
+        fread(bufferIn, 1, nchars, fp);
+    }
+    
+    char data[127];
+    int freq[127];
+    int size;
+
+    generateDataForHuffmanAlgo(bufferIn, nchars, data, freq, &size);
+    createHuffmanTable(data, freq, size);
+    createHuffmanEndCodedFile(bufferIn, nchars);
+    printHuffmanCodes(data, freq, size);
+    
+    fclose(fp);
+    return;
+}
 
 #endif
