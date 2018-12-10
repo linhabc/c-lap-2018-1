@@ -212,14 +212,14 @@ void createHuffmanEndcoding(MinHeapNode *root, int array[], int top) {
     return;
 }
 
-void createHuffmanTable(char data[], int freq[], int size) {
+MinHeapNode *createHuffmanTable(char data[], int freq[], int size) {
     MinHeapNode *root = buildHuffmanTree(data, freq, size);
 
     int array[MAX_TREE_HT];
     int top = 0;
     createHuffmanEndcoding(root, array, top);
 
-    return;
+    return root;
 }
 
 void printHuffmanEndCoding(Coding huffmanCode) {
@@ -268,8 +268,9 @@ void generateDataForHuffmanAlgo(char *buffer, long nchars, char data[], int freq
     return; 
 }
 
-void createHuffmanEndCodedFile(char *bufferIn, long nchars) {
-    FILE *fp = fopen("huffman_endcoded.txt", "a+");
+void createHuffmanEndCodedFile(char *bufferIn, long nchars, char *fnOut) {
+    FILE *fp = fopen(fnOut, "a+");
+    fprintf(fp, "HM ");
     for (long i = 0; i < nchars; i++) {
         char ch = bufferIn[i];
         int size = huffmanTable[ch].size;
@@ -282,7 +283,29 @@ void createHuffmanEndCodedFile(char *bufferIn, long nchars) {
     return;
 }
 
-void huffmanEndCodingFile(char *fn) {
+MinHeapNode *huffmanEndCodingFile(char *fnIn, char *fnOut) {
+    FILE *fp = openFileWithCatchException(fnIn);
+    long nchars = countCharInFile(fp);
+    
+    char *bufferIn = malloc(nchars + 1);
+    if (bufferIn) {
+        fread(bufferIn, 1, nchars, fp);
+    }
+    
+    char data[127];
+    int freq[127];
+    int size;
+    generateDataForHuffmanAlgo(bufferIn, nchars, data, freq, &size);
+
+    MinHeapNode *huffmanTreeRoot = createHuffmanTable(data, freq, size);
+    createHuffmanEndCodedFile(bufferIn, nchars, fnOut);
+    printHuffmanCodes(data, freq, size);
+    
+    fclose(fp);
+    return huffmanTreeRoot;
+}
+
+MinHeapNode *createHuffmanTreeFromFile(char *fn) {
     FILE *fp = openFileWithCatchException(fn);
     long nchars = countCharInFile(fp);
     
@@ -294,12 +317,82 @@ void huffmanEndCodingFile(char *fn) {
     char data[127];
     int freq[127];
     int size;
-
     generateDataForHuffmanAlgo(bufferIn, nchars, data, freq, &size);
-    createHuffmanTable(data, freq, size);
-    createHuffmanEndCodedFile(bufferIn, nchars);
-    printHuffmanCodes(data, freq, size);
+    MinHeapNode *huffmanTreeRoot = createHuffmanTable(data, freq, size);
     
+    fclose(fp);
+    return huffmanTreeRoot;
+}
+
+typedef MinHeapNode HuffmanTree;
+
+int isHuffmanEndcodingFile(char *fn) {
+    FILE *fp = fopen(fn, "r");
+    if (fp == NULL) {
+        printf("Can not open file");
+    }
+    char str[10];
+    fscanf(fp, "%s ", str);
+    fclose(fp);
+
+    return strcmp(str, "HM") == 0;    
+}
+
+long countCharWithoutPrefixInFile(FILE *fp) {
+    long nchars;
+    fseek(fp, -3, SEEK_END);
+    nchars = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    return nchars;
+}
+
+char *readEndcodedString(FILE *fp, long nbits) {
+    char *buffer = (char *)malloc(nbits);
+    fscanf(fp, "%s ", buffer);
+    fread(buffer, 1, nbits, fp);
+    fclose(fp);
+    return buffer;
+}
+
+char *decodingString(char *bufferIn, long nbits, HuffmanTree *root) {
+    char *decodedStr = (char *)malloc(nbits);
+    HuffmanTree *current = root;
+    long index = 0;
+    for (long i = 0; i < nbits; i++) {
+        if (bufferIn[i] == '0')
+            current = current->left;
+        else 
+            current = current->right;
+
+        if (current->left == NULL && current->right == NULL) {
+            decodedStr[index] = current->data;
+            index++;
+            current = root;
+        } 
+    }
+    decodedStr[index] = '\0';
+    return decodedStr;
+}
+
+char *huffmanDecodingToString(char *fn, HuffmanTree *root) {
+    if (!isHuffmanEndcodingFile(fn)) return NULL;
+
+    FILE *fp = openFileWithCatchException(fn);
+    long nbits = countCharWithoutPrefixInFile(fp);
+    char *bufferIn = readEndcodedString(fp, nbits);
+    printf("\n %s", bufferIn);
+    char *decodedString = decodingString(bufferIn, nbits, root);
+    fclose(fp);
+    return decodedString;
+}
+
+void printStringToFile(char *fn, char *decodedString) {
+    FILE *fp = fopen(fn, "w+");
+    if (fp == NULL) {
+        printf("Can not open file\n");
+        return;
+    }
+    fprintf(fp, "%s", decodedString);
     fclose(fp);
     return;
 }
