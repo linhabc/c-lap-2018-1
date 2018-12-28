@@ -11,7 +11,8 @@ int main(char argc, char *argv[]) {
     }
     char *fnIn = argv[1]; 
     char *fnOut = argv[2]; 
-    huffmanEndCodingFile(fnIn, fnOut);
+    
+    huffmanEndCodingToFile(fnIn, fnOut);
 
     return 0;
 }
