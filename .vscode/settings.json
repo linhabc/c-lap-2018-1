@@ -1,7 +1,8 @@
 {
   "files.associations": {
     "stdio.h": "c",
-    "weighted_graph_algo.h": "c"
+    "weighted_graph_algo.h": "c",
+    "stdlib.h": "c"
   },
   "editor.formatOnSave": false,
   "editor.tabSize": 4
