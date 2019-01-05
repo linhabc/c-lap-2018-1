@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "./lib/graph/weighted_graph_algo.h"
+#include "../lib/graph/weighted_graph_algo.h"
 
 typedef struct {
     int id;

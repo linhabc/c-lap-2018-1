@@ -219,7 +219,7 @@ void bubble_sort_linked_list(Edgenode *start)
 
     while (ptr1->next != lptr)
     {
-      if (ptr1->y > ptr1->next->y)
+      if (ptr1->weight > ptr1->next->weight)
       {
         swap_y(ptr1, ptr1->next);
         swapped = 1;
