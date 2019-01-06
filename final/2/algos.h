@@ -64,14 +64,6 @@ int stringLineToIntArray(char *str, int array[]) {
     return currIndex;
 }
 
-void printArray(int array[], int nmemb) {
-    for (int i = 0; i < nmemb; i++) {
-        printf(" %d", array[i]);
-    }
-    printf("\n");
-    return;
-}
-
 void printProductByNameInLine(
     int ids[], 
     int nids, 
