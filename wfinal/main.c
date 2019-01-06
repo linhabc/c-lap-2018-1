@@ -10,14 +10,6 @@ void clearBuffer() {
         ;
 }
 
-void printArray(int array[], int nmemb) {
-    for (int i = 0; i < nmemb; i++) {
-        printf(" %d", array[i]);
-    }
-    printf("\n");
-    return;
-}
-
 FILE *openFileWithErrorCatching(char *fn) {
     FILE *fp = fopen(fn, "r");
     if (fp == NULL) {
@@ -38,11 +30,37 @@ int intInStringToIntArray(char *str, int array[]) {
     return currIndex;
 }
 
+void moveToThLineN(FILE *fp, int n) {
+    char buffer[1000];
+    for (int i = 0; i < n; i++) {
+        fgets(buffer, 1000, fp);
+    }
+    return;
+}
+
+Edgenode *getEdgeByXY(Graph *g, int x, int y) {
+    Edgenode *temp = g->edges[x];
+    if (temp == NULL) return NULL;
+    while (temp != NULL) {
+        if (temp->y == y) return temp; 
+        temp = temp->next;
+    }
+    return NULL;
+}
+
+void printArray(int array[], int nmemb) {
+    for (int i = 0; i < nmemb; i++) {
+        printf(" %d", array[i]);
+    }
+    printf("\n");
+    return;
+}
+
 int main() {
     int op = 0;
     
     do {
-        printf("\n-------------------------------------\n");
+        printf("\n---------------------------------------\n");
         printf("1. \n");
         printf("2. \n");
         printf("3. \n");

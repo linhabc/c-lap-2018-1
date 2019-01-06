@@ -36,6 +36,16 @@ int readProductInFile(Product products[], char *fn) {
     return i;
 }
 
+Edgenode *getEdgeByXY(Graph *g, int x, int y) {
+    Edgenode *temp = g->edges[x];
+    if (temp == NULL) return NULL;
+    while (temp != NULL) {
+        if (temp->y == y) return temp; 
+        temp = temp->next;
+    }
+    return NULL;
+}
+
 void printProductList(Product products[], int nproducts) {
     for (int i = 0; i < nproducts; i++) {
         printf("Ma san pham: %d\n", products[i].id);
@@ -125,6 +135,7 @@ void readOrderHistoryFileAndCreateGraph(
     }
     createGraphFromMatrix(g, matrix);
     print_graph_by_vertex_index(g);
+    
     return;
 }
 
